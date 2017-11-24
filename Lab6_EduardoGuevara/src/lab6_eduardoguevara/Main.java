@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -61,11 +63,9 @@ public class Main extends javax.swing.JFrame {
         cb_elim = new javax.swing.JComboBox<>();
         bt_eliminarpp = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -139,6 +139,11 @@ public class Main extends javax.swing.JFrame {
         jTabbedPane1.addTab("Modificar Personas", jPanel2);
 
         bt_eliminarpp.setText("Eliminar");
+        bt_eliminarpp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bt_eliminarppMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -179,18 +184,6 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Archivo");
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Guardar Archivo");
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Abrir Archivo");
-        jMenu1.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu1);
-
         jMenu2.setText("Universo");
         jMenu2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,6 +199,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK));
+        jMenuItem4.setText("Cargar Universo");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
 
@@ -238,6 +240,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         String universo = JOptionPane.showInputDialog("Ingrese el nombre del Universo");
         uni.add(new Universo(universo));
+        this.dispose();
         actual = uni.get(uni.size() - 1);
         jd_personas.setModal(true);
         jd_personas.pack();
@@ -271,6 +274,18 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ocurrio un error");
             ex.printStackTrace();
         }
+        DefaultComboBoxModel m = (DefaultComboBoxModel) cb_listahab.getModel();
+        DefaultComboBoxModel c = (DefaultComboBoxModel) cb_elim.getModel();
+        //m.removeAllElements();
+        //c.removeAllElements();
+        m = new DefaultComboBoxModel();
+        c = new DefaultComboBoxModel();
+        for (int i = 0; i < actual.getHab().size(); i++) {
+            m.addElement(actual.getHab().get(i));
+            c.addElement(actual.getHab().get(i));
+        }
+        cb_listahab.setModel(m);
+        cb_elim.setModel(c);
     }//GEN-LAST:event_bt_crearMouseClicked
 
     private void bt_modMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_modMouseClicked
@@ -285,7 +300,23 @@ public class Main extends javax.swing.JFrame {
                 actual.getHab().get(i).setRaza(tf_modraza.getText());
             }
         }
-
+        DefaultComboBoxModel m = (DefaultComboBoxModel) cb_listahab.getModel();
+        DefaultComboBoxModel o = (DefaultComboBoxModel) cb_elim.getModel();
+        //m.removeAllElements();
+        //o.removeAllElements();
+        m = new DefaultComboBoxModel();
+        o = new DefaultComboBoxModel();
+        for (int i = 0; i < actual.getHab().size(); i++) {
+            m.addElement(actual.getHab().get(i));
+            o.addElement(actual.getHab().get(i));
+        }
+        cb_listahab.setModel(m);
+        cb_elim.setModel(o);
+        try {
+            actual.guardar();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_bt_modMouseClicked
 
     private void cb_listahabItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_listahabItemStateChanged
@@ -295,7 +326,61 @@ public class Main extends javax.swing.JFrame {
         tf_modplaneta.setText(c.getPlaneta());
         js_modmaxage.setValue(c.getMaxage());
         js_modki.setValue(c.getKi());
+
     }//GEN-LAST:event_cb_listahabItemStateChanged
+
+    private void bt_eliminarppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_eliminarppMouseClicked
+        // TODO add your handling code here:
+        for (int i = 0; i < actual.getHab().size(); i++) {
+            if (cb_elim.getSelectedItem().equals(actual.getHab().get(i))) {
+                System.out.println("entro");
+                actual.getHab().remove(i);
+            }
+        }
+        DefaultComboBoxModel m = (DefaultComboBoxModel) cb_listahab.getModel();
+        DefaultComboBoxModel o = (DefaultComboBoxModel) cb_elim.getModel();
+        m = new DefaultComboBoxModel();
+        o = new DefaultComboBoxModel();
+        for (int i = 0; i < actual.getHab().size(); i++) {
+            m.addElement(actual.getHab().get(i));
+            o.addElement(actual.getHab().get(i));
+        }
+        cb_listahab.setModel(m);
+        cb_elim.setModel(o);
+        try {
+            actual.guardar();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_bt_eliminarppMouseClicked
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        actual = new Universo();
+        JFileChooser filechooser = new JFileChooser();
+        int seleccion = filechooser.showOpenDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(this, "Entrooooo");
+            actual.setArchivo(filechooser.getSelectedFile());
+            actual.cargar();
+        }
+        DefaultComboBoxModel m = (DefaultComboBoxModel) cb_listahab.getModel();
+        DefaultComboBoxModel o = (DefaultComboBoxModel) cb_elim.getModel();
+        m = new DefaultComboBoxModel();
+        o = new DefaultComboBoxModel();
+        for (int i = 0; i < actual.getHab().size(); i++) {
+            m.addElement(actual.getHab().get(i));
+            o.addElement(actual.getHab().get(i));
+        }
+        cb_listahab.setModel(m);
+        cb_elim.setModel(o);
+        this.dispose();
+        jd_personas.setModal(true);
+        jd_personas.pack();
+        jd_personas.setLocationRelativeTo(this);
+        jd_personas.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -347,12 +432,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

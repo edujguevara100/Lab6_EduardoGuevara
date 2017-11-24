@@ -76,7 +76,7 @@ public class Universo {
                 bw.write(t.getKi() + "|");
                 bw.write(t.getMaxage() + "|");
                 bw.write(t.getPlaneta() + "|");
-                bw.write("\n");
+                bw.newLine();
             }
             bw.flush();
         } catch (Exception e) {
@@ -92,8 +92,8 @@ public class Universo {
             hab = new ArrayList();
             try {
                 sc = new Scanner(archivo);
-                sc.useDelimiter("|");
-                while (sc.hasNext()) {
+                sc.useDelimiter("[|]");
+                while (sc.hasNextLine()) {
                     hab.add(new SerVivo(sc.next(), sc.nextInt(), sc.nextInt(), sc.next()));
                 }
 

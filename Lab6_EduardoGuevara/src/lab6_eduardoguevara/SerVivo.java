@@ -60,7 +60,7 @@ public class SerVivo {
 
     @Override
     public String toString() {
-        return "SerVivo{" + "raza=" + raza + ", ki=" + ki + ", maxage=" + maxage + ", planeta=" + planeta + '}';
+        return "Raza: " + raza + "\n  Ki=" + ki;
     }
 
 }
