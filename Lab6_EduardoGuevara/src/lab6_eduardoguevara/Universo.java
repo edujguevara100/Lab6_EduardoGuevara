@@ -30,6 +30,12 @@ public class Universo {
     public Universo(String nombre) {
         this.nombre = nombre;
         archivo = new File("./" + nombre + ".txt");
+        JFileChooser filec = new JFileChooser();
+        filec.setSelectedFile(archivo);
+        int seleccion = filec.showSaveDialog(null);
+        if(seleccion == JFileChooser.APPROVE_OPTION){
+            archivo = filec.getSelectedFile();
+        }
     }
 
     public File getArchivo() {

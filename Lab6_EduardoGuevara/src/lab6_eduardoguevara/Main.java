@@ -228,11 +228,6 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        // TODO add your handling code here:
-        ////////////
-        ///////////////
-        ///////////////
-        ////////////
 
     }//GEN-LAST:event_jMenu2ActionPerformed
 
@@ -240,7 +235,6 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         String universo = JOptionPane.showInputDialog("Ingrese el nombre del Universo");
         uni.add(new Universo(universo));
-        this.dispose();
         actual = uni.get(uni.size() - 1);
         jd_personas.setModal(true);
         jd_personas.pack();
@@ -276,8 +270,6 @@ public class Main extends javax.swing.JFrame {
         }
         DefaultComboBoxModel m = (DefaultComboBoxModel) cb_listahab.getModel();
         DefaultComboBoxModel c = (DefaultComboBoxModel) cb_elim.getModel();
-        //m.removeAllElements();
-        //c.removeAllElements();
         m = new DefaultComboBoxModel();
         c = new DefaultComboBoxModel();
         for (int i = 0; i < actual.getHab().size(); i++) {
@@ -302,8 +294,6 @@ public class Main extends javax.swing.JFrame {
         }
         DefaultComboBoxModel m = (DefaultComboBoxModel) cb_listahab.getModel();
         DefaultComboBoxModel o = (DefaultComboBoxModel) cb_elim.getModel();
-        //m.removeAllElements();
-        //o.removeAllElements();
         m = new DefaultComboBoxModel();
         o = new DefaultComboBoxModel();
         for (int i = 0; i < actual.getHab().size(); i++) {
@@ -350,7 +340,7 @@ public class Main extends javax.swing.JFrame {
         try {
             actual.guardar();
         } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_bt_eliminarppMouseClicked
 
@@ -360,7 +350,6 @@ public class Main extends javax.swing.JFrame {
         JFileChooser filechooser = new JFileChooser();
         int seleccion = filechooser.showOpenDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
-            JOptionPane.showMessageDialog(this, "Entrooooo");
             actual.setArchivo(filechooser.getSelectedFile());
             actual.cargar();
         }
@@ -374,7 +363,6 @@ public class Main extends javax.swing.JFrame {
         }
         cb_listahab.setModel(m);
         cb_elim.setModel(o);
-        this.dispose();
         jd_personas.setModal(true);
         jd_personas.pack();
         jd_personas.setLocationRelativeTo(this);
